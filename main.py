@@ -444,9 +444,9 @@ def main():
     with open(jd_path, "r", encoding="utf-8") as file:
         jd = file.read()
 
-    count = int(input("\nHow many resumes to generate (3-5): "))
-    if count < 3 or count > 5:
-        print("Please enter a number between 3 and 5")
+    count = int(input("\nHow many resumes to generate: "))
+    if count < 1:
+        print("Please enter a positive number")
         return
 
     for i in range(count):
