@@ -1,0 +1,29 @@
+# Business Intelligence PDF Resume Generator
+
+This project reads `generated_resumes/jd.txt` and generates PDF resumes in a
+BI Developer format similar to the provided sample document.
+
+Output files:
+
+```txt
+generated_resumes/bi_developer_resume_1.pdf
+generated_resumes/bi_developer_resume_2.pdf
+generated_resumes/bi_developer_resume_3.pdf
+```
+
+Generated resumes include:
+
+* Blue two-column header with name, title, and contact details
+* Professional Summary
+* Core Technical Skills in a 3-column table
+* Professional Experience with BI/Power BI achievements
+* Key Projects
+* Education
+* Certifications
+* Additional Skills & Tools
+
+Run:
+
+```bash
+python main.py
+```

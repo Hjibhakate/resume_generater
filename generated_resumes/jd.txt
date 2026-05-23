@@ -1,0 +1,17 @@
+Power BI Developer
+FullTime
+No. Of Positions: 8 Job
+Pune / Nagpur , India
+
+Job Summary
+We are on the lookout for dynamic individuals...
+
+Key Responsibilities
+Create dashboards and interactive visual reports using Power BI
+Perform DAX queries and functions in Power BI
+Work with SSAS, SSIS, and SSRS
+
+Required Skills
+Power BI
+SQL Server
+Advanced Excel
