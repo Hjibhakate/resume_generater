@@ -11,7 +11,6 @@ from reportlab.platypus import (
     KeepTogether,
     ListFlowable,
     ListItem,
-    PageBreak,
     Paragraph,
     SimpleDocTemplate,
     Spacer,
@@ -24,6 +23,9 @@ fake = Faker("en_IN")
 
 OUTPUT_DIR = "generated_resumes"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+MIN_PDF_SIZE_KB = 11
+MAX_PDF_SIZE_KB = 12
 
 BLUE_DARK = colors.HexColor("#1B3A5C")
 BLUE = colors.HexColor("#2563EB")
@@ -98,6 +100,36 @@ PROJECTS = [
         "stack": "Power BI | Power Query | SQL Server",
         "summary": "Created operational dashboards for SLA, volume, backlog, and productivity metrics with automated refreshes and executive-level bookmarks.",
     },
+    {
+        "name": "Retail Revenue Analytics Suite",
+        "stack": "Power BI | Azure SQL | DAX",
+        "summary": "Built sales, inventory, and margin dashboards for retail leadership with drill-through pages by region, store, category, and sales channel.",
+    },
+    {
+        "name": "Supply Chain Visibility Dashboard",
+        "stack": "Power BI | SQL Server | Power Query",
+        "summary": "Created supplier, logistics, and delivery performance reports that helped operations teams track delays, fill rates, and inventory risk.",
+    },
+    {
+        "name": "Customer Churn Insights Model",
+        "stack": "Power BI | Python | SQL Server",
+        "summary": "Prepared customer datasets and designed executive dashboards showing churn indicators, revenue leakage, and segment-level retention actions.",
+    },
+    {
+        "name": "Executive KPI Scorecard",
+        "stack": "Power BI | SSAS | DAX",
+        "summary": "Designed a leadership scorecard with KPI thresholds, trend indicators, and automated refreshes for monthly business review meetings.",
+    },
+    {
+        "name": "Claims Reporting Modernization",
+        "stack": "Power BI | SSRS | SQL Server",
+        "summary": "Migrated legacy Excel and SSRS reports into interactive Power BI dashboards with validated measures and governed access controls.",
+    },
+    {
+        "name": "Manufacturing Quality Analytics",
+        "stack": "Power BI | SQL Server | Power Query",
+        "summary": "Delivered quality, rejection, downtime, and production dashboards with plant-level filters and root-cause views for process owners.",
+    },
 ]
 
 COMPANIES = [
@@ -106,6 +138,100 @@ COMPANIES = [
     "DataVista Consulting",
     "NexGen Insights",
     "BluePeak Technologies",
+    "QuantEdge Analytics",
+    "Visionary Data Labs",
+    "CloudMetric Solutions",
+    "InsightWorks Technologies",
+    "DataBridge Systems",
+    "Apex BI Services",
+    "NextWave Digital",
+]
+
+ROLE_PROFILES = [
+    {
+        "title": "Business Intelligence Developer",
+        "current_roles": ["Power BI Developer", "BI Developer", "Business Intelligence Developer"],
+        "previous_roles": ["Junior BI Developer", "Data Analyst", "Reporting Analyst"],
+        "years": random.choice([3, 4, 5]),
+    },
+    {
+        "title": "Power BI Developer",
+        "current_roles": ["Power BI Developer", "BI Analyst", "BI Reporting Developer"],
+        "previous_roles": ["MIS Analyst", "SQL Reporting Analyst", "Data Analyst"],
+        "years": random.choice([2, 3, 4]),
+    },
+    {
+        "title": "Senior BI Developer",
+        "current_roles": ["Senior BI Developer", "Senior Power BI Developer", "BI Consultant"],
+        "previous_roles": ["BI Developer", "Power BI Analyst", "SQL BI Developer"],
+        "years": random.choice([5, 6, 7]),
+    },
+    {
+        "title": "Data Visualization Developer",
+        "current_roles": ["Data Visualization Developer", "Power BI Consultant", "Analytics Developer"],
+        "previous_roles": ["Reporting Analyst", "Data Analyst", "Power BI Analyst"],
+        "years": random.choice([3, 4, 5]),
+    },
+]
+
+TEAMS = [
+    "Full-time | Analytics Practice",
+    "Full-time | Data & Insights Team",
+    "Full-time | Enterprise Reporting",
+    "Full-time | Business Analytics COE",
+    "Full-time | Data Platform Team",
+    "Contract | BI Modernization Program",
+]
+
+EDUCATION_OPTIONS = [
+    ("Bachelor of Engineering - Computer Science", "Savitribai Phule Pune University"),
+    ("Bachelor of Technology - Information Technology", "Rashtrasant Tukadoji Maharaj Nagpur University"),
+    ("Bachelor of Science - Computer Science", "University of Mumbai"),
+    ("Master of Computer Applications", "Pune University"),
+    ("Bachelor of Engineering - Electronics & Telecommunication", "Nagpur University"),
+    ("Bachelor of Computer Applications", "Bangalore University"),
+]
+
+CERTIFICATION_POOL = [
+    "Microsoft Certified: Power BI Data Analyst Associate (PL-300)",
+    "Microsoft Certified: Azure Data Fundamentals (DP-900)",
+    "Microsoft Certified: Azure Database Administrator Associate (DP-300)",
+    "Microsoft Certified: Azure Fundamentals (AZ-900)",
+    "Microsoft Certified: Fabric Analytics Engineer Associate (DP-600)",
+    "SQL Server Reporting Services Certification",
+    "Advanced DAX for Power BI",
+    "Power BI Service Administration",
+    "Data Warehousing and Business Intelligence",
+    "Excel Power Pivot and Power Query Certification",
+]
+
+ADDITIONAL_SKILL_POOL = [
+    "Reporting & Visualisation: Power BI Desktop, Power BI Service, SSRS, Paginated Reports, Custom Visuals",
+    "Data Platforms: SQL Server 2016/2019, Azure Synapse Analytics, Azure SQL Database, Azure Data Factory",
+    "Programming & Query: T-SQL, DAX, Power Query M, Python (pandas, openpyxl), basic VBA",
+    "Data Warehousing: Kimball methodology, Star & Snowflake schema, SCD Types 1 & 2",
+    "Productivity: Advanced Excel, Power Pivot, SharePoint, Teams, Jira",
+    "Governance: Workspace management, data refresh monitoring, access control, deployment pipelines",
+    "Analytics: KPI design, variance analysis, forecasting support, executive scorecards",
+    "Data Integration: Flat files, REST APIs, Oracle, SQL Server, cloud data sources",
+    "Documentation: Data dictionaries, report catalogs, user guides, release notes",
+    "Quality: Report validation, reconciliation, UAT support, stakeholder sign-off",
+]
+
+SUMMARY_TEMPLATES = [
+    "{title} with {years}+ years of experience building dashboards, semantic models, and reporting solutions across {domain}. Skilled in {skills}, requirement analysis, and stakeholder communication.",
+    "Detail-oriented {title} with {years}+ years of hands-on experience in {skills}. Strong background in transforming raw operational data into governed dashboards and decision-ready insights for {domain}.",
+    "Analytics-focused {title} with {years}+ years of experience delivering Power BI reports, DAX measures, SQL datasets, and KPI scorecards. Known for improving reporting accuracy, refresh reliability, and executive visibility.",
+    "Business-minded {title} with {years}+ years of experience converting business questions into scalable BI solutions. Experienced in {skills}, data modelling, dashboard design, and report performance tuning.",
+]
+
+DOMAINS = [
+    "sales and finance teams",
+    "operations and supply-chain functions",
+    "HR, finance, and leadership teams",
+    "retail, manufacturing, and service operations",
+    "enterprise reporting and KPI governance",
+    "customer analytics and revenue operations",
 ]
 
 
@@ -214,68 +340,131 @@ def extract_skills(jd):
             break
         if skill not in found:
             found.append(skill)
-    return found[:9]
+    required = found[:3]
+    optional = found[3:] + [skill for skill in CORE_SKILLS if skill not in found]
+    random.shuffle(optional)
+    return (required + optional)[:9]
 
 
-def generate_summary(skills):
+def generate_summary(title, years, skills):
     lead_skills = ", ".join(skills[:4])
-    return (
-        "Results-driven Business Intelligence Developer with hands-on experience designing "
-        "and delivering enterprise-grade analytics solutions. Proven expertise in "
-        f"{lead_skills}, data modelling, and ETL workflows. Adept at translating business "
-        "requirements into actionable dashboards that improve reporting speed, KPI visibility, "
-        "and strategic decision-making."
+    template = random.choice(SUMMARY_TEMPLATES)
+    return template.format(
+        title=title,
+        years=years,
+        skills=lead_skills,
+        domain=random.choice(DOMAINS),
     )
 
 
+def generate_experience_points(skills, senior=False):
+    dashboard_count = random.choice([6, 8, 10, 12, 15, 18, 20])
+    user_count = random.choice([80, 120, 150, 200, 250, 300])
+    reporting_gain = random.choice([25, 30, 35, 40, 45, 50])
+    etl_gain = random.choice([20, 25, 30, 35, 40])
+    performance_gain = random.choice([30, 35, 40, 45, 50, 55])
+    source = random.choice(["SQL Server", "Azure SQL", "Oracle", "Excel files", "REST APIs", "Azure Synapse"])
+    department = random.choice(["Sales", "Finance", "Operations", "HR", "Supply Chain", "Customer Success"])
+    model = random.choice(["star-schema", "snowflake", "tabular", "semantic"])
+
+    pool = [
+        f"Built {dashboard_count}+ Power BI dashboards using data from {source}, improving recurring reporting turnaround by {reporting_gain}%.",
+        f"Designed {model} data models and reusable DAX measures for {department} KPIs, improving consistency across business reports.",
+        f"Created Power Query transformations and SQL views that reduced manual data preparation effort for {user_count}+ users.",
+        f"Optimized report queries, relationships, and measures, improving dashboard load performance by {performance_gain}%.",
+        f"Configured Power BI Service refresh schedules, workspace access, and row-level security for business teams.",
+        f"Partnered with {department} stakeholders to gather requirements, validate calculations, and deliver actionable KPI scorecards.",
+        f"Developed T-SQL stored procedures, CTEs, and reporting datasets for faster Power BI and SSRS consumption.",
+        f"Redesigned ETL workflows and validation checks, reducing data refresh failures and cutting processing time by {etl_gain}%.",
+        f"Prepared report documentation, metric definitions, and user guides to improve adoption across {department} teams.",
+        f"Delivered UAT support, reconciled dashboard totals with source systems, and managed production report releases.",
+    ]
+    if senior:
+        pool.extend(
+            [
+                "Reviewed BI deliverables from junior analysts and introduced dashboard design standards for the reporting team.",
+                "Led stakeholder demos and sprint planning for BI enhancements across multiple business units.",
+                "Created reusable Power BI templates and measure patterns to speed up report delivery.",
+            ]
+        )
+    return random.sample(pool, 4)
+
+
+def generate_duration_pair(years):
+    current_start_year = 2026 - random.choice([1, 2, 3])
+    previous_start_year = max(2018, current_start_year - random.choice([1, 2, 3]))
+    previous_end_year = current_start_year - 1
+    current_month = random.choice(["Jan", "Mar", "Apr", "Jul", "Sep", "Nov"])
+    previous_month = random.choice(["Jan", "Feb", "Jun", "Jul", "Aug", "Oct"])
+    end_month = random.choice(["Mar", "Jun", "Sep", "Dec"])
+
+    if years <= 3:
+        previous_start_year = current_start_year - 1
+    return (
+        f"{current_month} {current_start_year} - Present",
+        f"{previous_month} {previous_start_year} - {end_month} {previous_end_year}",
+    )
+
+
+def generate_projects():
+    projects = []
+    for project in random.sample(PROJECTS, 3):
+        summary = project["summary"]
+        summary = summary.replace("3 days", random.choice(["2 days", "3 days", "4 days"]))
+        summary = summary.replace("4 hours", random.choice(["3 hours", "4 hours", "6 hours"]))
+        projects.append(
+            {
+                "name": project["name"],
+                "stack": project["stack"],
+                "summary": summary,
+            }
+        )
+    return projects
+
+
 def generate_resume_data(jd):
-    first = fake.first_name_male()
+    first = fake.unique.first_name_male()
     last = fake.last_name()
+    profile = random.choice(ROLE_PROFILES)
     skills = extract_skills(jd)
     company_one, company_two = random.sample(COMPANIES, 2)
     city = random.choice(["Pune", "Nagpur", "Mumbai", "Bengaluru", "Hyderabad"])
+    years = profile["years"]
+    current_duration, previous_duration = generate_duration_pair(years)
+    education, university = random.choice(EDUCATION_OPTIONS)
+    senior = years >= 5
 
     return {
         "name": f"{first} {last}",
-        "title": "Business Intelligence Developer",
+        "title": profile["title"],
         "email": f"{first.lower()}.{last.lower()}@email.com",
         "phone": f"+91 {random.randint(70000, 99999)} {random.randint(10000, 99999)}",
         "location": f"{city}, Maharashtra" if city in ["Pune", "Nagpur", "Mumbai"] else city,
         "linkedin": f"linkedin.com/in/{first.lower()}{last.lower()}",
-        "summary": generate_summary(skills),
+        "summary": generate_summary(profile["title"], years, skills),
         "skills": skills,
         "experiences": [
             {
-                "role": random.choice(["Senior BI Developer", "Power BI Developer", "BI Developer"]),
+                "role": random.choice(profile["current_roles"]),
                 "company": company_one,
-                "team": "Full-time | Analytics Practice",
-                "duration": "Jan 2023 - Present",
-                "points": random.sample(EXPERIENCE_POINTS, 6),
+                "team": random.choice(TEAMS),
+                "duration": current_duration,
+                "points": generate_experience_points(skills, senior=senior),
             },
             {
-                "role": random.choice(["BI Developer", "Power BI Analyst", "Data Analyst"]),
+                "role": random.choice(profile["previous_roles"]),
                 "company": company_two,
-                "team": "Full-time | Data & Insights Team",
-                "duration": "Jul 2021 - Dec 2022",
-                "points": random.sample(EXPERIENCE_POINTS, 5),
+                "team": random.choice(TEAMS),
+                "duration": previous_duration,
+                "points": generate_experience_points(skills, senior=False),
             },
         ],
-        "projects": random.sample(PROJECTS, 3),
-        "education": "Bachelor of Engineering - Computer Science",
-        "university": "Savitribai Phule Pune University",
-        "education_years": "2017 - 2021",
-        "certifications": [
-            "Microsoft Certified: Power BI Data Analyst Associate (PL-300)",
-            "Microsoft Certified: Azure Data Fundamentals (DP-900)",
-            "Microsoft Certified: Azure Database Administrator Associate (DP-300)",
-        ],
-        "additional_skills": [
-            "Reporting & Visualisation: Power BI Desktop, Power BI Service, SSRS, Paginated Reports, Custom Visuals",
-            "Data Platforms: SQL Server 2016/2019, Azure Synapse Analytics, Azure SQL Database, Azure Data Factory",
-            "Programming & Query: T-SQL, DAX, Power Query M, Python (pandas, openpyxl), basic VBA",
-            "Data Warehousing: Kimball methodology, Star & Snowflake schema, SCD Types 1 & 2",
-            "Productivity: Advanced Excel, Power Pivot, SharePoint, Teams, Jira",
-        ],
+        "projects": generate_projects(),
+        "education": education,
+        "university": university,
+        "education_years": random.choice(["2016 - 2020", "2017 - 2021", "2018 - 2022", "2015 - 2019"]),
+        "certifications": random.sample(CERTIFICATION_POOL, 3),
+        "additional_skills": random.sample(ADDITIONAL_SKILL_POOL, 5),
     }
 
 
@@ -365,6 +554,24 @@ def bullet_list(points, styles):
     )
 
 
+def pad_pdf_to_target_size(filename, min_kb=MIN_PDF_SIZE_KB, max_kb=MAX_PDF_SIZE_KB):
+    min_bytes = min_kb * 1024
+    max_bytes = max_kb * 1024
+    current_size = os.path.getsize(filename)
+
+    if current_size >= min_bytes:
+        return current_size
+
+    target_size = random.randint(min_bytes, max_bytes)
+    padding_size = target_size - current_size
+    padding = b"\n%" + (b" " * max(0, padding_size - 3)) + b"\n"
+
+    with open(filename, "ab") as file:
+        file.write(padding)
+
+    return os.path.getsize(filename)
+
+
 def create_pdf_resume(data, filename):
     doc = SimpleDocTemplate(
         filename,
@@ -401,7 +608,6 @@ def create_pdf_resume(data, filename):
         )
         story.append(bullet_list(exp["points"], styles))
 
-    story.append(PageBreak())
     add_section(story, "Key Projects", styles)
     for project in data["projects"]:
         story.append(
@@ -433,6 +639,7 @@ def create_pdf_resume(data, filename):
 
     story.append(Paragraph("References available upon request", styles["footer"]))
     doc.build(story)
+    pad_pdf_to_target_size(filename)
 
 
 def main():
@@ -444,9 +651,9 @@ def main():
     with open(jd_path, "r", encoding="utf-8") as file:
         jd = file.read()
 
-    count = int(input("\nHow many resumes to generate (3-5): "))
-    if count < 3 or count > 5:
-        print("Please enter a number between 3 and 5")
+    count = int(input("\nHow many resumes to generate (1-100): "))
+    if count < 1 or count > 100:
+        print("Please enter a number between 1 and 100")
         return
 
     for i in range(count):
